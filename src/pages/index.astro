@@ -1,11 +1,26 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import { WeatherWidget } from '../components/WeatherWidget';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const fomc = await import('../content/latest.md');
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="FOMC result & Weather">
+  <main class="max-w-4xl mx-auto p-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="md:col-span-2 prose lg:prose-xl">
+        <h1>{fomc.frontmatter.title}</h1>
+        <p class="text-gray-600">
+          date: {fomc.frontmatter.date} | author: {fomc.frontmatter.author}
+        </p>
+        <div class="mt-8">
+          <fomc.Content />
+        </div>
+      </div>
+      
+      <div class="md:col-span-1">
+        <WeatherWidget client:load />
+      </div>
+    </div>
+  </main>
 </Layout>
